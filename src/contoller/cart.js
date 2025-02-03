@@ -86,6 +86,55 @@ const userCart = async (req, res) => {
     }
 };
 
+const getCustomerCart = async (req, res) => {
+    const { _id: user } = req.user
+    try {
+        const getCart = await UserCart.find({ user });
+        res.status(200).json({
+            message: 'user cart delivered successfully',
+            result: getCart
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: `error: ${error}`
+        })
+    }
+}
+
+const deleteCustomerCart = async (req, res) => {
+    const { _id } = req.user
+    const { id } = req.params
+    try {
+        const productToBeRemoved = {
+            $pull: {
+                items: { productId: id }
+            }
+        }
+        const resultCart = await UserCart.updateOne({ user: _id }, productToBeRemoved);
+
+        let cart = await UserCart.findOne({ user: _id });
+
+        // Calculate the total price using reduce
+        const totalPrice = cart.items.reduce((acc, item) => {
+            return acc + item.price * item.quantity;
+        }, 0);
+
+        cart.updatedAt = new Date();
+
+        // Save the total price in the cart (optional)
+        cart.bill = totalPrice;
+
+        await cart.save();
+
+        res.status(200).json({ message: 'product deleted successfully', result: resultCart });
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+};
+
+
 module.exports = {
     userCart,
+    getCustomerCart,
+    deleteCustomerCart
 };

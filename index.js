@@ -10,6 +10,7 @@ const signup = require('./src/route/auth');
 const pass = require('./src/route/food');
 const paths = require('./src/route/stores')
 const cart = require('./src/route/cart');
+const updates = require('./src/route/quantity')
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use('/api/v2', signup);
 app.use('/api/v3', pass);
 app.use('/api/v4', cart);
 app.use('/api/v1', paths);
+app.use('/api/v2', updates);
 
 const port = 2000
 
@@ -31,7 +33,6 @@ function kick() {
         app.listen(port, 'localhost', () => {
             if (connect) {
                 console.log(`Server is running on port ${port}`);
-                console.log('Connected to port ${port}');
             }
         });
     } catch (error) {
