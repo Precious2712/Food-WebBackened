@@ -28,15 +28,13 @@ app.use('/api/v2', updates);
 const port = 2000
 
 function kick() {
-    try {
-        const connect = mongoose.connect(process.env.mongooseBaseUrl)
-        app.listen(port, 'localhost', () => {
-            if (connect) {
-                console.log(`Server is running on port ${port}`);
-            }
-        });
-    } catch (error) {
-        console.log(error);
-    }
+    app.listen(port, 'localhost', () => {
+        const connect = mongoose.connect(process.env.mongooseBaseUrl);
+        if (connect) {
+            console.log(`Server is running on port ${port}`);
+        }else{
+            console.log('failed to connect to server');
+        }
+    });
 }
 kick();
