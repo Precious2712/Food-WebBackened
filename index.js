@@ -37,9 +37,6 @@ function kick() {
         });
     } catch (error) {
         console.log(error);
-
     }
 }
 kick();
-
-
