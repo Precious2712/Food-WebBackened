@@ -4,7 +4,6 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
-const testRequest = require('./src/route/request');
 const signup = require('./src/route/auth');
 const pass = require('./src/route/food');
 const paths = require('./src/route/stores')
@@ -16,7 +15,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/v1', testRequest);
 app.use('/api/v2', signup);
 app.use('/api/v3', pass);
 app.use('/api/v4', cart);
